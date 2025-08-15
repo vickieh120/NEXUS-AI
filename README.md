@@ -1,7 +1,7 @@
 
 <p align="center">
   <a href="https://github.com/novaxmd/BMB-XMD-DATA/raw/refs/heads/main/bmb.jpg">
-    <img src="https://i.postimg.cc/598PM15f/IMG-20250814-WA0195.jpg" width="100%" height="auto">
+    <img src="https://i.postimg.cc/3RrYq2xP/28ed8a29-7bae-4747-b11c-1fd04d0ee9bf.jpg" width="100%" height="auto">
   </a>
 </p>
 
