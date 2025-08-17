@@ -1,9 +1,9 @@
 services:
   - type: web
-    name: KEITH-XMD
+    name: NEXUS-AI
     env: node
     plan: free
-    repo: https://github.com/Keith-tech57/KEITH-XMD
+    repo: https://github.com/officialPkdriller/NEXUS-AI
     branch: main
     buildCommand: npm install
     startCommand: npm start
