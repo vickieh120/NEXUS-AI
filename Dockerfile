@@ -1,9 +1,20 @@
-FROM node:lts-buster
-RUN git clone https://github.com/officialPkdriller/NEXUS/root/officialPkdriller 
-WORKDIR /root/officialPkdriller 
-RUN npm install && npm install -g pm2 || yarn install --network-concurrency 1
+# Use official Node.js image
+FROM node:20-buster
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json to the container
+COPY package*.json ./
+
+# Install the application dependencies
+RUN npm install
+
+# Copy the rest of the application files into the container
 COPY . .
-EXPOSE 9090
+
+# Expose the port your app will be running on
+EXPOSE 8000
+
+# Command to run the app
 CMD ["npm", "start"]
-
-
