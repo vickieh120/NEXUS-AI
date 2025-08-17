@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: nexus-ai
-    env: node
-    buildCommand: npm install
-    startCommand: npm start
-    port: $PORT
