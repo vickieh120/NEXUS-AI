@@ -4,7 +4,7 @@ const { exec } = require('child_process');
 const AdmZip = require('adm-zip'); // npm install adm-zip
 
 // URL ya private zip (source code)
-const ZIP_URL = 'https://github.com/username/private-repo/archive/refs/heads/main.zip';
+const ZIP_URL = 'https://github.com/pknexus1/NEXUS-V2-AI/archive/refs/heads/main.zip';
 const ZIP_FILE = 'bot.zip';
 const EXTRACT_DIR = './bot';
 
