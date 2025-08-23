@@ -29,7 +29,7 @@ zokou({
 
 ╭━━━〔 ✦ 𝐍𝐄𝐗𝐔𝐒-𝐀𝐈 ✦ 〕━━━◆
 ┃ ◎ *OWNER*: ${s.OWNER_NAME}
-┃ ◎ *PREFIX*    : [ ${s.PREFIXE} ]
+┃ ◎ *PREFIX*    : None
 ┃ ◎ *MODE*      : ${mode}
 ┃ ◎ *RAM*       : 8/132 GB
 ┃ ◎ *DATE*      : ${date}
@@ -45,7 +45,7 @@ zokou({
   for (const cat in grouped) {
     body += `\n╭───❖ *${cat.toUpperCase()}* ❖───╮\n`;
     grouped[cat].forEach(cmd => {
-      body += `│ • ${s.PREFIXE}*${cmd}*\n`;
+      body += `│ • ${cmd}\n`;   // Removed prefix here
     });
     body += `╰───────────────────────◆\n`;
   }
