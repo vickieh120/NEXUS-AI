@@ -6,21 +6,21 @@ const s = require(__dirname + "/../set");
 zokou({
   nomCom: "menu",
   categorie: "Menu"
-}, async (dest, sock, ctx) => {
-  let { repondre, mybotpic } = ctx;
+}, async (jid, sock, ctx) => {
+  let { repondre } = ctx;
   let { cm } = require(__dirname + "/../framework/zokou");
 
   // Group commands by category
-  let categories = {};
+  let grouped = {};
   cm.map(cmd => {
-    if (!categories[cmd.categorie]) categories[cmd.categorie] = [];
-    categories[cmd.categorie].push(cmd.nomCom);
+    if (!grouped[cmd.categorie]) grouped[cmd.categorie] = [];
+    grouped[cmd.categorie].push(cmd.nomCom);
   });
 
   // Mode check
   let mode = (s.MODE.toLowerCase() === "yes") ? "public" : "private";
 
-  // Date & Time
+  // Date
   moment.tz.setDefault("Etc/GMT");
   const date = moment().format("DD/MM/YYYY");
 
@@ -39,22 +39,22 @@ zokou({
 ╰━━━━━━━━━━━━━━━━━━━━━━━◆
 `;
 
-  // Body (categories & commands)
-  let body = "✨ *Available Commands* ✨\n";
-  for (const cat in categories) {
+  // Body
+  let body = `\n✨ *Available Categories & Commands* ✨\n`;
+  for (const cat in grouped) {
     body += `\n╭───❖ *${cat.toUpperCase()}* ❖───╮\n`;
-    categories[cat].forEach(cmd => {
+    grouped[cat].forEach(cmd => {
       body += `│ • ${s.PREFIXE}${cmd}\n`;
     });
-    body += `╰───────────────────◆\n`;
+    body += `╰───────────────────────◆\n`;
   }
 
   // Footer
   let footer = `\n🚀 Powered by *Pkdriller* | Official Channel: @NEXUS-AI`;
 
   try {
-    await sock.sendMessage(dest, {
-      text: header + "\n" + body + footer,
+    await sock.sendMessage(jid, {
+      text: header + body + footer,
       contextInfo: {
         mentionedJid: [sock.user.id],
         forwardingScore: 999,
