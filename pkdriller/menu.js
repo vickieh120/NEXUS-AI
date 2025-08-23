@@ -45,7 +45,7 @@ zokou({
   for (const cat in grouped) {
     body += `\n╭───❖ *${cat.toUpperCase()}* ❖───╮\n`;
     grouped[cat].forEach(cmd => {
-      body += `│ • ${cmd}\n`;   // Removed prefix here
+      body += `│★ *${cmd}*\n`;   // Removed prefix here
     });
     body += `╰───────────────────────◆\n`;
   }
