@@ -16,13 +16,13 @@ zokou({
   // GitHub repo data
   let stars = "N/A", forks = "N/A";
   try {
-    const res = await fetch("https://api.github.com/repos/DevEvil-AI/Nexus-AI", {
+    const res = await fetch("https://api.github.com/repos/officialPkdriller/NEXUS-AI", {
       headers: { "Accept": "application/vnd.github+json" }
     });
     if (res.ok) {
       const json = await res.json();
-      stars = json.stargazers_count;
-      forks = json.forks_count;
+      stars = json.stargazers_count || 0;
+      forks = json.forks_count || 0;
     } else {
       console.error("GitHub API error:", res.status, await res.text());
     }
@@ -66,7 +66,7 @@ zokou({
       }
     });
   } catch (err) {
-    console.error("Repo error:", err);
+    console.error("Repo error: ", err);
     repondre("Repo error: " + err);
   }
 });
