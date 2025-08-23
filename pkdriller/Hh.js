@@ -5,7 +5,9 @@ const fetch = require("node-fetch");
 
 zokou({
   nomCom: "repo",
-  categorie: "Info"
+  categorie: "Info",
+  desc: "Show GitHub repository info",
+  reaction: "📂"
 }, async (jid, sock, ctx) => {
   let { repondre } = ctx;
 
@@ -28,25 +30,25 @@ zokou({
       console.error("GitHub API error:", res.status, await res.text());
     }
   } catch (err) {
-    console.error("Fetch error:", err);
+    console.error("❌ Fetch error:", err);
   }
 
-  // Caption
+  // Caption box
   const caption = `
-╭━━━〔 ✦ 𝐍𝐄𝐗𝐔𝐒-𝐀𝐈 𝐑𝐄𝐏𝐎 ✦ 〕━━━◆
-┃ 👤 *Creator*   : PK Driller
-┃ 📅 *Date*      : ${date}
-┃ 💻 *Platform*  : ${os.platform()}
-┃ ⭐ *Stars*     : ${stars}
-┃ 🍴 *Forks*     : ${forks}
-┃ 📝 *About*     : ${desc}
-╰━━━━━━━━━━━━━━━━━━━━━━━◆
-
-🔗 *GitHub Repo* : https://github.com/officialPkdriller/NEXUS-AI
-📢 *Channel*     : https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x
-👨‍💻 *Owner*      : wa.me/254794146821
-
-🚀 Powered by *Pkdriller* | 2025💎
+╭───〔 *📂 NEXUS-AI REPOSITORY* 〕
+│
+├ 👤 *Creator*   : PK Driller
+├ 📅 *Date*      : ${date}
+├ 💻 *Platform*  : ${os.platform()}
+├ ⭐ *Stars*     : ${stars}
+├ 🍴 *Forks*     : ${forks}
+├ 📝 *About*     : ${desc}
+│
+├ 🔗 *GitHub Repo* : https://github.com/officialPkdriller/NEXUS-AI
+├ 📢 *Channel*     : https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x
+├ 👨‍💻 *Owner*      : wa.me/254794146821
+│
+╰───〔 🚀 Powered by *Pkdriller* | 2025 💎 〕
 `;
 
   try {
@@ -65,7 +67,7 @@ zokou({
       }
     });
   } catch (err) {
-    console.error("Repo error:", err);
-    repondre("Repo error: " + err);
+    console.error("❌ Repo send error:", err);
+    repondre("❌ Repo error: " + err);
   }
 });
