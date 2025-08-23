@@ -26,6 +26,7 @@ zokou({
 
   // Header
   let header = `
+
 ╭━━━〔 ✦ 𝐍𝐄𝐗𝐔𝐒-𝐀𝐈 ✦ 〕━━━◆
 ┃ ◎ Owner     : ${s.OWNER_NAME}
 ┃ ◎ Prefix    : [ ${s.PREFIXE} ]
@@ -44,7 +45,7 @@ zokou({
   for (const cat in grouped) {
     body += `\n╭───❖ *${cat.toUpperCase()}* ❖───╮\n`;
     grouped[cat].forEach(cmd => {
-      body += `│ • ${s.PREFIXE}${cmd}\n`;
+      body += `│> • ${s.PREFIXE}*${cmd}*\n`;
     });
     body += `╰───────────────────────◆\n`;
   }
