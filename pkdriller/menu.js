@@ -54,8 +54,10 @@ zokou({
   let footer = `\n🚀 Powered by *Pkdriller* | 2025💎`;
 
   try {
+    // Send menu image with caption
     await sock.sendMessage(jid, {
-      text: header + body + footer,
+      image: { url: "https://i.postimg.cc/DfxsyWD7/d444fb03-b701-409d-822c-d48b9427eb93.jpg" },
+      caption: header + body + footer,
       contextInfo: {
         mentionedJid: [sock.user.id],
         forwardingScore: 999,
@@ -64,14 +66,6 @@ zokou({
           newsletterJid: "120363288304618280@newsletter",
           newsletterName: "NEXUS-AI",
           serverMessageId: -1
-        },
-        externalAdReply: {
-          title: "NEXUS AI",
-          body: "Tap to join the official channel",
-          mediaType: 1,
-          renderLargerThumbnail: true,
-          mediaUrl: "https://i.postimg.cc/DfxsyWD7/d444fb03-b701-409d-822c-d48b9427eb93.jpg", // main image
-          thumbnailUrl: "https://i.postimg.cc/DfxsyWD7/d444fb03-b701-409d-822c-d48b9427eb93.jpg" // fallback
         }
       }
     });
