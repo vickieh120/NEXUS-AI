@@ -3,71 +3,64 @@ const moment = require("moment-timezone");
 const os = require("os");
 const fetch = require("node-fetch");
 
-zokou({
-  nomCom: "repo",
-  categorie: "Info",
-  desc: "Show GitHub repository info",
-  reaction: "📂"
-}, async (jid, sock, ctx) => {
-  let { repondre } = ctx;
+zokou(
+  {
+    nomCom: "repo",
+    categorie: "Info",
+    desc: "Show GitHub repository info",
+    reaction: "📂",
+  },
+  async (jid, sock, ctx) => {
+    const { repondre } = ctx;
+    moment.tz.setDefault("Etc/GMT");
+    const date = moment().format("DD/MM/YYYY");
 
-  // Date & meta
-  moment.tz.setDefault("Etc/GMT");
-  const date = moment().format("DD/MM/YYYY");
+    try {
+      // Fetch GitHub repository data
+      const response = await fetch(
+        "https://api.github.com/repos/officialPkdriller/NEXUS-AI"
+      );
+      
+      if (!response.ok) throw new Error(`API Error: ${response.status}`);
+      
+      const repoData = await response.json();
+      const { stargazers_count: stars = 0, forks_count: forks = 0, description = "No description" } = repoData;
 
-  // GitHub repo data
-  let stars = 0, forks = 0, desc = "No description";
-  try {
-    const res = await fetch("https://api.github.com/repos/officialPkdriller/NEXUS-AI", {
-      headers: { "Accept": "application/vnd.github+json" }
-    });
-    if (res.ok) {
-      const json = await res.json();
-      stars = json.stargazers_count || 0;
-      forks = json.forks_count || 0;
-      desc = json.description || "No description provided";
-    } else {
-      console.error("GitHub API error:", res.status, await res.text());
-    }
-  } catch (err) {
-    console.error("❌ Fetch error:", err);
-  }
-
-  // Caption box
-  const caption = `
-╭───〔 *📂 NEXUS-AI REPOSITORY* 〕
+      const caption = `
+╭───〔 📂 NEXUS-AI REPOSITORY 〕
 │
-├ 👤 *Creator*   : PK Driller
-├ 📅 *Date*      : ${date}
-├ 💻 *Platform*  : ${os.platform()}
-├ ⭐ *Stars*     : ${stars}
-├ 🍴 *Forks*     : ${forks}
-├ 📝 *About*     : ${desc}
+├ 👤 Creator   : PK Driller
+├ 📅 Date      : ${date}
+├ 💻 Platform  : ${os.platform()}
+├ ⭐ Stars     : ${stars}
+├ 🍴 Forks     : ${forks}
+├ 📝 About     : ${description}
 │
-├ 🔗 *GitHub Repo* : https://github.com/officialPkdriller/NEXUS-AI
-├ 📢 *Channel*     : https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x
-├ 👨‍💻 *Owner*      : wa.me/254794146821
+├ 🔗 GitHub Repo : https://github.com/officialPkdriller/NEXUS-AI
+├ 📢 Channel     : https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x
+├ 👨‍💻 Owner      : wa.me/254794146821
 │
-╰───〔 🚀 Powered by *Pkdriller* | 2025 💎 〕
+╰───〔 🚀 Powered by Pkdriller | 2025 💎 〕
 `;
 
-  try {
-    await sock.sendMessage(jid, {
-      image: { url: "https://i.postimg.cc/DfxsyWD7/d444fb03-b701-409d-822c-d48b9427eb93.jpg" },
-      caption,
-      contextInfo: {
-        mentionedJid: [sock.user.id],
-        forwardingScore: 999,
-        isForwarded: true,
-        forwardedNewsletterMessageInfo: {
-          newsletterJid: "120363288304618280@newsletter",
-          newsletterName: "NEXUS-AI",
-          serverMessageId: -1
-        }
-      }
-    });
-  } catch (err) {
-    console.error("❌ Repo send error:", err);
-    repondre("❌ Repo error: " + err);
+      await sock.sendMessage(
+        jid,
+        {
+          image: { 
+            url: "https://i.postimg.cc/DfxsyWD7/d444fb03-b701-409d-822c-d48b9427eb93.jpg" 
+          },
+          caption: caption.trim(),
+          contextInfo: {
+            mentionedJid: [sock.user.id],
+            forwardingScore: 999,
+            isForwarded: true,
+          },
+        },
+        { quoted: ctx }
+      );
+    } catch (error) {
+      console.error("Error:", error);
+      repondre("❌ Failed to fetch repository information");
+    }
   }
-});
+);
