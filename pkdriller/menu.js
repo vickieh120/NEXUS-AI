@@ -28,15 +28,15 @@ const date = moment().format("DD/MM/YYYY");
 let header = `
 
 ╭━━━〔 ✦ 𝐍𝐄𝐗𝐔𝐒-𝐀𝐈 ✦ 〕━━━◆
-┃ ◎ OWNER: ${s.OWNER_NAME}
-┃ ◎ PREFIX    : None
-┃ ◎ MODE      : ${mode}
-┃ ◎ RAM       : 8/132 GB
-┃ ◎ DATE      : ${date}
-┃ ◎ Platform  : ${os.platform()}
-┃ ◎ CREATOR  : PK Driller
-┃ ◎ COMMANDS : ${cm.length}
-┃ ◎ THEME     : NEXUS-AI
+┃ ◎ *OWNER*: ${s.OWNER_NAME}
+┃ ◎ *PREFIX*    : None
+┃ ◎ *MODE*      : ${mode}
+┃ ◎ *RAM*       : 8/132 GB
+┃ ◎ *DATE*      : ${date}
+┃ ◎ *Platform*  : ${os.platform()}
+┃ ◎ *CREATOR*  : PK Driller
+┃ ◎ *COMMANDS* : ${cm.length}
+┃ ◎ *THEME*     : NEXUS-AI
 ╰━━━━━━━━━━━━━━━━━━━━━━━◆
 `;
 
@@ -45,7 +45,7 @@ let body = \n✨ *Available Categories & Commands* ✨\n;
 for (const cat in grouped) {
 body += \n╭───❖ *${cat.toUpperCase()}* ❖───╮\n;
 grouped[cat].forEach(cmd => {
-body += │ • ${cmd}\n;   // Removed prefix here
+body += │ ★ *${cmd}*\n;   // Removed prefix here
 });
 body += ╰───────────────────────◆\n;
 }
@@ -68,7 +68,7 @@ serverMessageId: -1
 externalAdReply: {
 title: "NEXUS AI",
 body: "Tap to join the official channel",
-thumbnailUrl: "https://ibb.co/08GYzDS",
+thumbnailUrl: "https://i.postimg.cc/DfxsyWD7/d444fb03-b701-409d-822c-d48b9427eb93.jpg",
 mediaType: 1,
 renderLargerThumbnail: true
 }
