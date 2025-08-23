@@ -28,15 +28,15 @@ zokou({
   let header = `
 
 ╭━━━〔 ✦ 𝐍𝐄𝐗𝐔𝐒-𝐀𝐈 ✦ 〕━━━◆
-┃ ◎ Owner     : ${s.OWNER_NAME}
-┃ ◎ Prefix    : [ ${s.PREFIXE} ]
-┃ ◎ Mode      : ${mode}
-┃ ◎ RAM       : 8/132 GB
-┃ ◎ Date      : ${date}
+┃ ◎ *OWNER*: ${s.OWNER_NAME}
+┃ ◎ *PREFIX*    : [ ${s.PREFIXE} ]
+┃ ◎ *MODE*      : ${mode}
+┃ ◎ *RAM*       : 8/132 GB
+┃ ◎ *DATE*      : ${date}
 ┃ ◎ Platform  : ${os.platform()}
-┃ ◎ Creator   : PK Driller
-┃ ◎ Commands  : ${cm.length}
-┃ ◎ Theme     : NEXUS-AI
+┃ ◎ *CREATOR*  : PK Driller
+┃ ◎ *COMMANDS* : ${cm.length}
+┃ ◎ *THEME*     : NEXUS-AI
 ╰━━━━━━━━━━━━━━━━━━━━━━━◆
 `;
 
@@ -45,7 +45,7 @@ zokou({
   for (const cat in grouped) {
     body += `\n╭───❖ *${cat.toUpperCase()}* ❖───╮\n`;
     grouped[cat].forEach(cmd => {
-      body += `│> • ${s.PREFIXE}*${cmd}*\n`;
+      body += `│ • ${s.PREFIXE}*${cmd}*\n`;
     });
     body += `╰───────────────────────◆\n`;
   }
