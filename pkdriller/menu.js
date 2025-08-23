@@ -1,4 +1,4 @@
-Increase size of menu image here nothing more or less const { zokou } = require(__dirname + "/../framework/zokou");
+const { zokou } = require(__dirname + "/../framework/zokou");
 const os = require("os");
 const moment = require("moment-timezone");
 const s = require(__dirname + "/../set");
