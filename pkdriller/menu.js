@@ -45,7 +45,7 @@ zokou({
   for (const cat in grouped) {
     body += `\n╭───❖ *${cat.toUpperCase()}* ❖───╮\n`;
     grouped[cat].forEach(cmd => {
-      body += `│ • *${cmd}*\n`;   // Removed prefix here
+      body += `│ • *${cmd}*\n`;
     });
     body += `╰───────────────────────◆\n`;
   }
@@ -68,11 +68,10 @@ zokou({
         externalAdReply: {
           title: "NEXUS AI",
           body: "Tap to join the official channel",
-          thumbnailUrl: "https://i.postimg.cc/DfxsyWD7/d444fb03-b701-409d-822c-d48b9427eb93.jpg",
           mediaType: 1,
-          renderLargerThumbnail: true,   // ensure bigger preview
-          thumbnailWidth: 800,           // custom width
-          thumbnailHeight: 600           // custom height
+          renderLargerThumbnail: true,
+          mediaUrl: "https://i.postimg.cc/DfxsyWD7/d444fb03-b701-409d-822c-d48b9427eb93.jpg", // main image
+          thumbnailUrl: "https://i.postimg.cc/DfxsyWD7/d444fb03-b701-409d-822c-d48b9427eb93.jpg" // fallback
         }
       }
     });
