@@ -45,7 +45,7 @@ zokou({
   for (const cat in grouped) {
     body += `\n╭───❖ *${cat.toUpperCase()}* ❖───╮\n`;
     grouped[cat].forEach(cmd => {
-      body += `│★ *${cmd}*\n`;   // Removed prefix here
+      body += `│ • ${cmd}\n`;   // Removed prefix here
     });
     body += `╰───────────────────────◆\n`;
   }
@@ -70,7 +70,9 @@ zokou({
           body: "Tap to join the official channel",
           thumbnailUrl: "https://files.catbox.moe/q99uu1.jpg",
           mediaType: 1,
-          renderLargerThumbnail: true
+          renderLargerThumbnail: true,   // ensure bigger preview
+          thumbnailWidth: 600,           // custom width
+          thumbnailHeight: 400           // custom height
         }
       }
     });
