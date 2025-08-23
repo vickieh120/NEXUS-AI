@@ -51,7 +51,7 @@ zokou({
   }
 
   // Footer
-  let footer = `\n🚀 Powered by *Pkdriller* | Official Channel: @NEXUS-AI`;
+  let footer = `\n🚀 Powered by *Pkdriller* | 2025💎`;
 
   try {
     await sock.sendMessage(jid, {
@@ -68,11 +68,11 @@ zokou({
         externalAdReply: {
           title: "NEXUS AI",
           body: "Tap to join the official channel",
-          thumbnailUrl: "https://files.catbox.moe/q99uu1.jpg",
+          thumbnailUrl: "https://i.postimg.cc/DfxsyWD7/d444fb03-b701-409d-822c-d48b9427eb93.jpg",
           mediaType: 1,
           renderLargerThumbnail: true,   // ensure bigger preview
-          thumbnailWidth: 600,           // custom width
-          thumbnailHeight: 400           // custom height
+          thumbnailWidth: 800,           // custom width
+          thumbnailHeight: 600           // custom height
         }
       }
     });
