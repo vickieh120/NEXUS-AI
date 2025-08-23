@@ -4,72 +4,126 @@ const {
 const os = require('os');
 const moment = require("moment-timezone");
 const s = require(__dirname + "/../set");
+
 zokou({
   'nomCom': "menu",
   'categorie': "Menu"
-}, async (_0x466846, _0x35dd19, _0x42e541) => {
+}, async (dest, zk, commandOptions) => {
   let {
-    ms: _0x2f945c,
-    repondre: _0x35a713,
-    prefixe: _0x5b6b66,
-    nomAuteurMessage: _0x4099cb,
-    mybotpic: _0x11905
-  } = _0x42e541;
+    ms,
+    repondre,
+    prefixe,
+    nomAuteurMessage,
+    mybotpic
+  } = commandOptions;
+  
   let {
-    cm: _0x3f91bc
+    cm
   } = require(__dirname + "/../framework/zokou");
-  let _0x4b68cd = {};
-  let _0x2fb207 = "public";
+  
+  let categorizedCommands = {};
+  let mode = "public";
+  
   if (s.MODE.toLowerCase() !== "yes") {
-    _0x2fb207 = "private";
+    mode = "private";
   }
-  _0x3f91bc.map(_0x5a12df => {
-    if (!_0x4b68cd[_0x5a12df.categorie]) {
-      _0x4b68cd[_0x5a12df.categorie] = [];
+  
+  cm.map(cmd => {
+    if (!categorizedCommands[cmd.categorie]) {
+      categorizedCommands[cmd.categorie] = [];
     }
-    _0x4b68cd[_0x5a12df.categorie].push(_0x5a12df.nomCom);
+    categorizedCommands[cmd.categorie].push(cmd.nomCom);
   });
+  
   moment.tz.setDefault("Etc/GMT");
-  const _0x30b447 = moment().format("DD/MM/YYYY");
-  let _0x5810f6 = "\n╭━━✧★☞  𝐍𝐄𝐗𝐔𝐒-𝐀𝐈  😾💜✧━━❖\n┊✺┌────••••────⊷\n┃★│◎ Owner : " + s.OWNER_NAME + "\n┃★│◎ Prefix : [ " + s.PREFIXE + " ]\n┃★│◎ Mode : " + _0x2fb207 + "\n┃★│◎ Ram : 8/132 GB\n┃★│◎ Date : " + _0x30b447 + "\n┃★│◎ Platform : " + os.platform() + "\n┃★│◎ Creator : PK Driller\n┃★│◎ Commands : " + _0x3f91bc.length + "\n┃★│◎ Theme : NEXUS-AI\n┊   └────••••────⊷\n╰━━━••✧NEXUS-AI✧••━━━◆\n";
-  let _0x499730 = "𝐍𝐄𝐗𝐔𝐒 𝐀𝐈 𝐌𝐄𝐍𝐔";
-  for (const _0x297db1 in _0x4b68cd) {
-    _0x499730 += "\n╭━━━❂ *" + _0x297db1 + "* ❂━━─••\n║╭━━══••══━━••⊷ ";
-    for (const _0x38505c of _0x4b68cd[_0x297db1]) {
-      _0x499730 += "          \n║┊❍ " + s.PREFIXE + "  *" + _0x38505c + '*';
+  const currentDate = moment().format("DD/MM/YYYY");
+  
+  // Beautiful header design
+  let header = `
+╔═══════════════════════╗
+║      🚀 NEXUS-AI      ║
+║    🤖 BOT MENU        ║
+╚═══════════════════════╝
+
+✨ *Bot Information* ✨
+• 👑 Owner: ${s.OWNER_NAME}
+• ⚡ Prefix: [ ${s.PREFIXE} ]
+• 🔒 Mode: ${mode}
+• 📊 RAM: ${(os.freemem() / 1024 / 1024 / 1024).toFixed(2)}/${(os.totalmem() / 1024 / 1024 / 1024).toFixed(2)} GB
+• 📅 Date: ${currentDate}
+• 🖥️ Platform: ${os.platform()}
+• 👨‍💻 Creator: PK Driller
+• 📋 Commands: ${cm.length}
+• 🎨 Theme: NEXUS-AI
+
+╔═══════════════════════╗
+║    📋 COMMAND LIST    ║
+╚═══════════════════════╝
+`;
+
+  // Build the command list with beautiful formatting
+  let commandList = "";
+  for (const category in categorizedCommands) {
+    commandList += `
+╭─「 📁 ${category.toUpperCase()} 」─⭓
+│
+`;
+    
+    let commands = categorizedCommands[category];
+    let row = "";
+    for (let i = 0; i < commands.length; i++) {
+      if (i % 2 === 0 && i !== 0) {
+        commandList += `│  ${row}\n`;
+        row = "";
+      }
+      row += `│ • ${s.PREFIXE}${commands[i].padEnd(15)}`;
     }
-    _0x499730 += "\n║╰━━══••══━━••⊷\n╰════────════◆◆◆";
+    
+    if (row !== "") {
+      commandList += `│  ${row}\n`;
+    }
+    
+    commandList += `│
+╰───────────────────────⭓
+`;
   }
-  _0x499730 += "\n> @NEXUS AI\n";
+  
+  // Footer with social links
+  let footer = `
+🔗 *Follow Our Channels*:
+• WhatsApp: https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x
+• GitHub: https://github.com/pkdriller0
+
+💫 *NEXUS-AI - Advanced AI Pairing Technology* 💫
+
+⭐ *Type ${s.PREFIXE}help <command> for more info* ⭐
+`;
+
+  const fullMessage = header + commandList + footer;
+
   try {
-    await _0x35dd19.sendMessage(_0x466846, {
-      'text': _0x5810f6 + _0x499730,
+    await zk.sendMessage(dest, {
+      'text': fullMessage,
       'contextInfo': {
-        'forwardingScore': 0x3e7,
+        'forwardingScore': 999,
         'isForwarded': true,
         'forwardedNewsletterMessageInfo': {
           'newsletterJid': "120363288304618280@newsletter",
-          'newsletterName': "NEXUS-AI",
-          'serverMessageId': 0x8f
+          'newsletterName': "NEXUS-AI CHANNEL",
+          'serverMessageId': 143
         },
         'externalAdReply': {
-          'title': "NEXUS AI",
-          'body': "Tap to join the official channel",
+          'title': "🚀 NEXUS-AI BOT",
+          'body': "Advanced AI Pairing Technology",
           'thumbnailUrl': "https://files.catbox.moe/q99uu1.jpg",
-          'mediaType': 0x1,
-          'renderLargerThumbnail': true
+          'mediaType': 1,
+          'renderLargerThumbnail': true,
+          'sourceUrl': "https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x"
         }
       }
     });
-    await _0x35dd19.sendMessage(_0x466846, {
-      'audio': {
-        'url': "https://files.catbox.moe/m4sf9a.mp3"
-      },
-      'mimetype': 'audio/mp4',
-      'ptt': false
-    });
-  } catch (_0x2fdc61) {
-    console.error("Menu error: ", _0x2fdc61);
-    _0x35a713("Menu error: " + _0x2fdc61);
+  } catch (error) {
+    console.error("Menu error: ", error);
+    repondre("Menu error: " + error);
   }
 });
