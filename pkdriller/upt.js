@@ -1,59 +1,57 @@
-const {
-  zokou
-} = require("../framework/zokou");
-const runtime = function (_0x28ca1c) {
-  _0x28ca1c = Number(_0x28ca1c);
-  var _0x268c3d = Math.floor(_0x28ca1c / 86400);
-  var _0x345b56 = Math.floor(_0x28ca1c % 86400 / 3600);
-  var _0x239dce = Math.floor(_0x28ca1c % 3600 / 60);
-  var _0x206c14 = Math.floor(_0x28ca1c % 60);
-  var _0x19d16e = _0x268c3d > 0 ? _0x268c3d + (_0x268c3d == 1 ? " day, " : " d, ") : '';
-  var _0x49ce9c = _0x345b56 > 0 ? _0x345b56 + (_0x345b56 == 1 ? " hour, " : " h, ") : '';
-  var _0x249a90 = _0x239dce > 0 ? _0x239dce + (_0x239dce == 1 ? " minute, " : " m, ") : '';
-  var _0x12266c = _0x206c14 > 0 ? _0x206c14 + (_0x206c14 == 1 ? " second" : " s") : '';
-  return _0x19d16e + _0x49ce9c + _0x249a90 + _0x12266c;
-};
-zokou({
-  'nomCom': "uptime",
-  'desc': "To check runtime",
-  'Categorie': "General",
-  'reaction': '↖️',
-  'fromMe': "true"
-}, async (_0x4d1cb2, _0x6e67fd, _0x17c78a) => {
-  const {
-    ms: _0x42d661,
-    arg: _0x32ab8b,
-    repondre: _0x1e9691
-  } = _0x17c78a;
+const { zokou } = require(__dirname + "/../framework/zokou");
+const os = require("os");
+const moment = require("moment-timezone");
+const conf = require(__dirname + "/../set");
+
+moment.tz.setDefault(conf.TZ);
+
+// Convert uptime seconds to readable format
+function formatUptime(seconds) {
+  const d = Math.floor(seconds / (3600 * 24));
+  const h = Math.floor((seconds % (3600 * 24)) / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  return `${d}d ${h}h ${m}m ${s}s`;
+}
+
+zokou({ nomCom: "uptime", categorie: "General" }, async (dest, zk, commandeOptions) => {
+  const { ms } = commandeOptions;
+
   try {
-    await _0x6e67fd.sendMessage(_0x4d1cb2, {
-      'audio': {
-        'url': "https://files.catbox.moe/mfhv0a.mp3"
-      },
-      'mimetype': "audio/mp4",
-      'ptt': true,
-      'contextInfo': {
-        'isForwarded': true,
-        'forwardedNewsletterMessageInfo': {
-          'newsletterJid': "120363288304618280@newsletter",
-          'newsletterName': "NEXUS-AI",
-          'serverMessageId': 0x8f
+    const uptime = os.uptime();
+    const time = moment().format("HH:mm:ss");
+    const date = moment().format("DD/MM/YYYY");
+
+    let msg = `╭─❏ *⚡ NEXUS-AI UPTIME*\n` +
+              `│\n` +
+              `│ ⏳ Uptime: *${formatUptime(uptime)}*\n` +
+              `│ 📆 Date: *${date}*\n` +
+              `│ 🕒 Time: *${time}*\n` +
+              `│\n` +
+              `╰───────────────❏`;
+
+    await zk.sendMessage(dest, {
+      text: msg,
+      contextInfo: {
+        forwardingScore: 999,
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: "120363288304618280@newsletter",
+          newsletterName: "NEXUS-AI",
+          serverMessageId: 143
         },
-        'forwardingScore': 0x3e7,
-        'externalAdReply': {
-          'title': "Bot Runtime",
-          'body': " Uptime: " + runtime(process.uptime()),
-          'thumbnailUrl': "https://files.catbox.moe/ts2az9.jpg",
-          'sourceUrl': "https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x",
-          'mediaType': 0x1,
-          'renderLargerThumbnail': true
+        externalAdReply: {
+          title: "⏳ Bot Uptime Monitor",
+          body: "System is stable ✅",
+          thumbnailUrl: conf.LOGO, // use your logo from set.js
+          sourceUrl: conf.GURL,
+          mediaType: 1
         }
       }
-    }, {
-      'quoted': _0x42d661
-    });
-  } catch (_0x141e7b) {
-    console.log("❌ uptime Command Error: " + _0x141e7b);
-    _0x1e9691("❌ Error: " + _0x141e7b);
+    }, { quoted: ms });
+
+  } catch (e) {
+    console.log("❌ Uptime Command Error:", e);
+    await zk.sendMessage(dest, { text: `❌ Error: ${e}` }, { quoted: ms });
   }
 });
