@@ -44,7 +44,7 @@ zokou({
       });
       await _0xff3268.sendMessage(_0x3ebb47, {
         'audio': {
-          'url': "https://files.catbox.moe/uhfull.mp3"
+          'url': "https://files.catbox.moe/bcmkyc.mp3"
         },
         'mimetype': "audio/mp4",
         'ptt': false,
