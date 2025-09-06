@@ -105,7 +105,7 @@ zokou(
   }
 );
 zokou({
-  nomCom: "playvideo",
+  nomCom: "video",
   aliases: ["video", "ytvideo", "ytmp4","getmovie", "moviedl","movie"],
   categorie: "Search",
   reaction: "🎬",
