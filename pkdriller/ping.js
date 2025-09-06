@@ -18,7 +18,7 @@ zokou({ nomCom: "ping", categorie: "General" }, async (dest, zk, commandeOptions
     const date = moment().format("DD/MM/YYYY");
     const uptime = os.uptime();
 
-    let msg = `╭─❏ *📡 PK-XMD PING*\n` +
+    let msg = `╭─❏ *📡 NEXUS-AI PING*\n` +
               `│\n` +
               `│ ⏱️ Response: *${ping}ms*\n` +
               `│ 📆 Date: *${date}*\n` +
@@ -38,7 +38,7 @@ zokou({ nomCom: "ping", categorie: "General" }, async (dest, zk, commandeOptions
           serverMessageId: 143
         },
         externalAdReply: {
-          title: "⚡ PK-XMD SYSTEM STATUS",
+          title: "⚡ NEXUS-AI SYSTEM STATUS",
           body: "Bot is running smoothly 🚀",
           thumbnailUrl: conf.LOGO, // use your logo in set.js
           sourceUrl: conf.GURL,
