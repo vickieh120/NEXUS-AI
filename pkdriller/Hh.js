@@ -24,7 +24,7 @@ zokou({
   'nomFichier': __filename
 }, async (_0x3ebb47, _0xff3268, _0x48dbdb) => {
   try {
-    const _0x1583f8 = await fetch("https://api.github.com/repos/Pkdriller01/NEXUS-AI");
+    const _0x1583f8 = await fetch("https://api.github.com/repos/officialPkdriller/NEXUS-AI");
     const _0x498987 = await _0x1583f8.json();
     if (_0x498987) {
       const _0x491941 = {
