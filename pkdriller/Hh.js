@@ -1,66 +1,104 @@
-const { zokou } = require(__dirname + "/../framework/zokou");
-const moment = require("moment-timezone");
-const os = require("os");
-const fetch = require("node-fetch");
+'use strict';
 
-zokou(
-  {
-    nomCom: "repo",
-    categorie: "Info",
-    desc: "Show GitHub repository info",
-    reaction: "📂",
-  },
-  async (jid, sock, ctx) => {
-    const { repondre } = ctx;
-    moment.tz.setDefault("Etc/GMT");
-    const date = moment().format("DD/MM/YYYY");
+Object.defineProperty(exports, "__esModule", { 'value': true });
 
-    try {
-      // Fetch GitHub repository data
-      const response = await fetch(
-        "https://api.github.com/repos/officialPkdriller/NEXUS-AI"
-      );
-      
-      if (!response.ok) throw new Error(`API Error: ${response.status}`);
-      
-      const repoData = await response.json();
-      const { stargazers_count: stars = 0, forks_count: forks = 0, description = "No description" } = repoData;
+const { zokou } = require("../framework/zokou");
+const axios = require("axios");
 
-      const caption = `
-╭───〔 📂 NEXUS-AI REPOSITORY 〕
-│
-├ 👤 Creator   : PK Driller
-├ 📅 Date      : ${date}
-├ 💻 Platform  : ${os.platform()}
-├ ⭐ Stars     : ${stars}
-├ 🍴 Forks     : ${forks}
-├ 📝 About     : ${description}
-│
-├ 🔗 GitHub Repo : https://github.com/officialPkdriller/NEXUS-AI
-├ 📢 Channel     : https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x
-├ 👨‍💻 Owner      : wa.me/254794146821
-│
-╰───〔 🚀 Powered by Pkdriller | 2025 💎 〕
-`;
-
-      await sock.sendMessage(
-        jid,
-        {
-          image: { 
-            url: "https://i.postimg.cc/DfxsyWD7/d444fb03-b701-409d-822c-d48b9427eb93.jpg" 
-          },
-          caption: caption.trim(),
-          contextInfo: {
-            mentionedJid: [sock.user.id],
-            forwardingScore: 999,
-            isForwarded: true,
-          },
-        },
-        { quoted: ctx }
-      );
-    } catch (error) {
-      console.error("Error:", error);
-      repondre("❌ Failed to fetch repository information");
+const newsletterContext = {
+  contextInfo: {
+    forwardingScore: 0x3e7,
+    isForwarded: true,
+    forwardedNewsletterMessageInfo: {
+      newsletterJid: "120363288304618280@newsletter",
+      newsletterName: "𝐍𝐄𝐗𝐔𝐒-𝐀𝐈",
+      serverMessageId: 0x1
     }
   }
-);
+};
+
+zokou({
+  nomCom: "repo",
+  categorie: "General",
+  reaction: "🟢",
+  nomFichier: __filename
+}, async (jid, sock, ctx) => {
+  const REPO_API = "https://api.github.com/repos/officialPkdriller/NEXUS-AI";
+  const REPO_URL = "https://github.com/officialPkdriller/NEXUS-AI";
+  const BANNER = "https://files.catbox.moe/bx4dii.jpg";
+  const AUDIO = "https://files.catbox.moe/bcmkyc.mp3";
+
+  try {
+    const { data } = await axios.get(REPO_API, {
+      headers: {
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "PK-XMD-Bot"
+      },
+      timeout: 10000
+    });
+
+    const stars = data?.stargazers_count ?? 0;
+    const forks = data?.forks_count ?? 0;
+    const issues = data?.open_issues_count ?? 0;
+    const watchers = data?.watchers_count ?? 0;
+    const created = data?.created_at ? new Date(data.created_at).toLocaleDateString("en-GB") : "N/A";
+    const updated = data?.updated_at ? new Date(data.updated_at).toLocaleString("en-GB") : "N/A";
+    const owner = data?.owner?.login ?? "Pkdriller";
+
+    const caption =
+`*𝐍𝐄𝐗𝐔𝐒-𝐀𝐈*
+
+_________● *𝐍𝐄𝐗𝐔𝐒-𝐀𝐈* ●____________
+| 💥 *ʀᴇᴘᴏsɪᴛᴏʀʏ:* ${REPO_URL}
+| 🌟 *sᴛᴀʀs:* ${stars}
+| 🍽 *ғᴏʀᴋs:* ${forks}
+| 🐛 *ɪssᴜᴇs:* ${issues}
+| 👁 *ᴡᴀᴛᴄʜᴇʀs:* ${watchers}
+| 📅 *ʀᴇʟᴇᴀsᴇ ᴅᴀᴛᴇ:* ${created}
+| 🔄 *ᴜᴘᴅᴀᴛᴇ ᴏɴ:* ${updated}
+| 👨‍💻 *ᴏᴡɴᴇʀ:* ${owner}
+| 💞 *ᴛʜᴇᴍᴇ:* *𝐍𝐄𝐗𝐔𝐒-𝐀𝐈*
+| 🥰 *ᴏɴʟʏ ɢᴏᴅ ᴄᴀɴ ᴊᴜᴅɢᴇ ᴍᴇ!👑*
+__________________________________
+            *ᴍᴀᴅᴇ ᴡɪᴛʜ 𝐍𝐄𝐗𝐔𝐒-𝐀𝐈*`;
+
+    await sock.sendMessage(jid, {
+      image: { url: BANNER },
+      caption,
+      ...newsletterContext
+    });
+
+    await sock.sendMessage(jid, {
+      audio: { url: AUDIO },
+      mimetype: "audio/mp4",
+      ptt: false,
+      ...newsletterContext
+    });
+
+  } catch (err) {
+    console.log("Repo fetch failed:", err?.response?.status || err?.message || err);
+
+    // Graceful fallback: still send your banner + static repo link (no scary error for users)
+    const fallbackCaption =
+`*𝐍𝐄𝐗𝐔𝐒-𝐀𝐈*
+
+_________● *𝐍𝐄𝐗𝐔𝐒-𝐀𝐈* ●____________
+| 💥 *ʀᴇᴘᴏsɪᴛᴏʀʏ:* ${REPO_URL}
+| ⚠️ *ʟɪᴠᴇ sᴛᴀᴛs:* ᴜɴᴀᴠᴀɪʟᴀʙʟᴇ ᴍᴏᴍᴇɴᴛᴀʀɪʟʏ
+__________________________________
+            *ᴍᴀᴅᴇ ᴡɪᴛʜ 𝐍𝐄𝐗𝐔𝐒-𝐀𝐈*`;
+
+    await sock.sendMessage(jid, {
+      image: { url: "https://files.catbox.moe/bx4dii.jpg" },
+      caption: fallbackCaption,
+      ...newsletterContext
+    });
+
+    await sock.sendMessage(jid, {
+      audio: { url: "https://files.catbox.moe/bcmkyc.mp3" },
+      mimetype: "audio/mp4",
+      ptt: false,
+      ...newsletterContext
+    });
+  }
+});

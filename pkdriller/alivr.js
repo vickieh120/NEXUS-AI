@@ -1,29 +1,26 @@
 const { zokou } = require(__dirname + "/../framework/zokou");
-const os = require("os");
 const moment = require("moment-timezone");
 const conf = require(__dirname + "/../set");
 
 moment.tz.setDefault(conf.TZ);
 
-zokou({ nomCom: "ping", categorie: "General" }, async (dest, zk, commandeOptions) => {
+zokou({ nomCom: "test", categorie: "General" }, async (dest, zk, commandeOptions) => {
   const { ms } = commandeOptions;
 
   try {
     const start = Date.now();
-    await zk.sendMessage(dest, { text: "🏓 Pinging..." });
+    await zk.sendMessage(dest, { text: "⚡ Running test..." });
     const end = Date.now();
 
     const ping = end - start;
     const time = moment().format("HH:mm:ss");
     const date = moment().format("DD/MM/YYYY");
-    const uptime = os.uptime();
 
-    let msg = `╭─❏ *📡 NEXUS-AI PING*\n` +
+    let msg = `╭─❏ *🛠️ NEXUS-AI TEST*\n` +
               `│\n` +
-              `│ ⏱️ Response: *${ping}ms*\n` +
+              `│ 📡 Ping: *${ping}ms*\n` +
               `│ 📆 Date: *${date}*\n` +
               `│ 🕒 Time: *${time}*\n` +
-              `│ ⚡ Uptime: *${Math.floor(uptime/3600)}h ${Math.floor((uptime%3600)/60)}m*\n` +
               `│\n` +
               `╰───────────────❏`;
 
@@ -38,9 +35,9 @@ zokou({ nomCom: "ping", categorie: "General" }, async (dest, zk, commandeOptions
           serverMessageId: 143
         },
         externalAdReply: {
-          title: "⚡ NEXUS-AI SYSTEM STATUS",
-          body: "Bot is running smoothly 🚀",
-          thumbnailUrl: conf.LOGO, // use your logo in set.js
+          title: "🛠️ System Test",
+          body: "Everything is working ✅",
+          thumbnailUrl: conf.LOGO,
           sourceUrl: conf.GURL,
           mediaType: 1
         }
@@ -48,7 +45,7 @@ zokou({ nomCom: "ping", categorie: "General" }, async (dest, zk, commandeOptions
     }, { quoted: ms });
 
   } catch (e) {
-    console.log("❌ Ping Command Error:", e);
+    console.log("❌ Test Command Error:", e);
     await zk.sendMessage(dest, { text: `❌ Error: ${e}` }, { quoted: ms });
   }
 });

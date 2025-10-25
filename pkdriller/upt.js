@@ -5,25 +5,28 @@ const conf = require(__dirname + "/../set");
 
 moment.tz.setDefault(conf.TZ);
 
-zokou({ nomCom: "ping", categorie: "General" }, async (dest, zk, commandeOptions) => {
+// Convert uptime seconds to readable format
+function formatUptime(seconds) {
+  const d = Math.floor(seconds / (3600 * 24));
+  const h = Math.floor((seconds % (3600 * 24)) / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  return `${d}d ${h}h ${m}m ${s}s`;
+}
+
+zokou({ nomCom: "uptime", categorie: "General" }, async (dest, zk, commandeOptions) => {
   const { ms } = commandeOptions;
 
   try {
-    const start = Date.now();
-    await zk.sendMessage(dest, { text: "🏓 Pinging..." });
-    const end = Date.now();
-
-    const ping = end - start;
+    const uptime = os.uptime();
     const time = moment().format("HH:mm:ss");
     const date = moment().format("DD/MM/YYYY");
-    const uptime = os.uptime();
 
-    let msg = `╭─❏ *📡 NEXUS-AI PING*\n` +
+    let msg = `╭─❏ *⚡ NEXUS-AI UPTIME*\n` +
               `│\n` +
-              `│ ⏱️ Response: *${ping}ms*\n` +
+              `│ ⏳ Uptime: *${formatUptime(uptime)}*\n` +
               `│ 📆 Date: *${date}*\n` +
               `│ 🕒 Time: *${time}*\n` +
-              `│ ⚡ Uptime: *${Math.floor(uptime/3600)}h ${Math.floor((uptime%3600)/60)}m*\n` +
               `│\n` +
               `╰───────────────❏`;
 
@@ -38,9 +41,9 @@ zokou({ nomCom: "ping", categorie: "General" }, async (dest, zk, commandeOptions
           serverMessageId: 143
         },
         externalAdReply: {
-          title: "⚡ NEXUS-AI SYSTEM STATUS",
-          body: "Bot is running smoothly 🚀",
-          thumbnailUrl: conf.LOGO, // use your logo in set.js
+          title: "⏳ Bot Uptime Monitor",
+          body: "System is stable ✅",
+          thumbnailUrl: conf.LOGO, // use your logo from set.js
           sourceUrl: conf.GURL,
           mediaType: 1
         }
@@ -48,7 +51,7 @@ zokou({ nomCom: "ping", categorie: "General" }, async (dest, zk, commandeOptions
     }, { quoted: ms });
 
   } catch (e) {
-    console.log("❌ Ping Command Error:", e);
+    console.log("❌ Uptime Command Error:", e);
     await zk.sendMessage(dest, { text: `❌ Error: ${e}` }, { quoted: ms });
   }
 });
