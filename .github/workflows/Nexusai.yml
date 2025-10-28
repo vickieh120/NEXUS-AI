@@ -1,0 +1,63 @@
+name: Nexusai
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/120 * * * *' # Fallback every 120 minutes
+
+permissions:
+  actions: actions
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  loop-task:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: |
+          if [ -f package.json ]; then
+            npm install
+          else
+            echo "Error: package.json not found"
+            exit 1
+          fi
+
+      - name: Run Bot (loop & auto-restart if crash)
+        run: |
+          echo "Running Nexusai in auto-restart mode..."
+          timeout 18000 bash -c 'while true; do npm start || { echo "Bot crashed with exit code $?, restarting..."; sleep 2; }; done'; [ $? -eq 124 ] && exit 0 || exit $?
+        env:
+          NODE_ENV: production
+
+      - name: Re-Trigger Workflow
+        if: success()
+        run: |
+          echo "Re-running workflow..."
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.NEXUSAI }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/Nexusai.yml/dispatches \
+            -d '{"ref":"main"}' || { echo "Re-trigger failed with exit code $?"; exit 1; }
+
+      - name: Notify on Failure
+        if: failure()
+        run: |
+          echo "Workflow failed! Check logs for details."
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.NEXUSAI }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues \
+            -d '{"title":"Nexusai Workflow Failure","body":"Workflow failed at ${{ github.run_id }}. Check logs for details.","labels":["bug"]}'abels":["bug"]}'
