@@ -6,7 +6,7 @@ on:
     - cron: '*/120 * * * *' # Fallback every 120  minutes
 
 permissions:
-  actions: actions
+  
   contents: read
 
 concurrency:
