@@ -3,7 +3,7 @@ name: Nexusai
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/120 * * * *' # Fallback every 30 minutes
+    - cron: '*/120 * * * *' # Fallback every 120 minutes
 
 permissions:
   actions: actions
